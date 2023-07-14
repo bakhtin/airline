@@ -4,7 +4,7 @@ from flight.models import Flight
 
 
 class UniqueFlight(models.Model):
-    flight = models.ForeignKey(Flight, verbose_name='Flight')
+    flight = models.ForeignKey(Flight, verbose_name='Flight', on_delete=models.CASCADE)
     departure_datetime = models.DateTimeField(verbose_name='Departure date and time', default='1990-01-01 00:00')
     left_seats_F = models.IntegerField(verbose_name='Left seats of first class', default=0)
     left_seats_B = models.IntegerField(verbose_name='Left seats of business class', default=0)
@@ -54,7 +54,7 @@ class UniqueFlight(models.Model):
         flight_time_minutes = flight_time - flight_time_hours * 60
         return str(flight_time_hours) + '.' + str(flight_time_minutes) + 'h'
 
-    def __unicode__(self):
+    def __str__(self):
         return "{} {} - {} : {} {} {}".format(self.departure_datetime, self.flight.departure_airport,
                                               self.flight.arrival_airport, self.left_seats_E, self.left_seats_B,
                                               self.left_seats_F)

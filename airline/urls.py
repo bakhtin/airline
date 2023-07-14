@@ -1,31 +1,28 @@
-from django.conf.urls import patterns, include, url
+from django.urls import path, include
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
-import aircraft
-import flight.views
-import flight.forms
-import order.views
-import order.forms
-import aircraft.forms
 import aircraft.views
-
+import flight.views
+import order.views
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
-                       url(r'^admin/', include(admin.site.urls)),
-                       url(r'^flights/', flight.views.ListFlightView.as_view(), name='flights', ),
-                       url(r'^$', flight.views.index),
-                       url(r'^search/$', flight.views.search),
-                       url(r'^flights_all/$', flight.views.show_all),
-                       url(r'^search_results/$', flight.views.search),
-                       url(r'^blog/', include('blog.urls')),
-                       url(r'^fill_data/$', order.views.fill_data),
-                       url(r'^place_order/$', order.views.place_order),
-                       url(r'^show_order/order_id/([0-9]+)/hash/([a-z0-9]+)/$', order.views.show_order),
-                       url(r'^register/$', order.views.register),
-                       url(r'^seat_conf/$', aircraft.views.show_seat_conf),
-                       url(r'^media/aircraft_images/[\w.-]+$', aircraft.views.get_image),
-                       url(r'^contacts/$', flight.views.contacts)
-                       # url(r'^timetable/$', flight.views.timetable),
-)
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('flights/', flight.views.ListFlightView.as_view(), name='flights'),
+    path('', flight.views.index),
+    path('search/', flight.views.search),
+    path('flights_all/', flight.views.show_all),
+    path('search_results/', flight.views.search),
+    path('blog/', include('blog.urls')),
+    path('fill_data/', order.views.fill_data),
+    path('place_order/', order.views.place_order),
+    path('show_order/order_id/<int:order_id>/hash/<str:hash_str>/', order.views.show_order),
+    path('register/', order.views.register),
+    path('seat_conf/', aircraft.views.show_seat_conf),
+    path('media/aircraft_images/<str:image>', aircraft.views.get_image),
+    path('contacts/', flight.views.contacts),
+    # path('timetable/', flight.views.timetable),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

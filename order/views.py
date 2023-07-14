@@ -4,7 +4,7 @@ import datetime
 
 from django.core.mail import send_mail
 from django.http import Http404
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.template.context import RequestContext
 
 from order.forms import OrderForm
@@ -21,10 +21,9 @@ def fill_data(request):
         unique_flight = UniqueFlight.objects.filter(id__exact=unique_flight_id)[0]
 
         order_form = OrderForm()
-        return render_to_response('order.html', {'order_form': order_form, 'unique_flight': unique_flight,
+        return render(request, 'order.html', {'order_form': order_form, 'unique_flight': unique_flight,
                                                  'class_of_service': class_of_service,
-                                                 'price': unique_flight.get_price(class_of_service)},
-                                  context_instance=RequestContext(request))
+                                                 'price': unique_flight.get_price(class_of_service)})
     else:
         return redirect('/search/')
 
@@ -64,12 +63,10 @@ def place_order(request):
             if order.unique_flight.try_take_seat(class_of_service):
                 order.save()
                 send_order(order)
-                return render_to_response('status.html', {'status': 'Order created, link sent to you by email'},
-                                          context_instance=RequestContext(request))
+                return render(request, 'status.html', {'status': 'Order created, link sent to you by email'})
             else:
-                return render_to_response('status.html', {
-                    'status': 'We are sorry, but there are no free places of class you have chosen'},
-                                          context_instance=RequestContext(request))
+                return render(request, 'status.html', {
+                    'status': 'We are sorry, but there are no free places of class you have chosen'})
     else:
         return redirect('/search/')
 
@@ -83,13 +80,12 @@ def show_order(request, order_id, order_hash):
     if 30 < diff < 360:
         aircraft = order.unique_flight.flight.aircraft
         free_seats = Order.get_free_seats(order.unique_flight.id, aircraft, order.class_of_service)
-        return render_to_response('show_order.html', {'order': order,
+        return render(request, 'show_order.html', {'order': order,
                                                       'price': order.unique_flight.get_price(order.class_of_service),
                                                       'free_seats': free_seats,
-                                                      'order_id': order_id}, context_instance=RequestContext(request))
+                                                      'order_id': order_id})
     else:
-        return render_to_response('status.html', {'status': 'It is not time for registration yet'},
-                                  context_instance=RequestContext(request))
+        return render(request, 'status.html', {'status': 'It is not time for registration yet'})
 
 
 def register(request):
@@ -112,8 +108,7 @@ def register(request):
     else:
         status = 'It is not time for registration yet'
 
-    return render_to_response('status.html', {'status': status},
-                              context_instance=RequestContext(request))
+    return render(request, 'status.html', {'status': status})
 
 
 def ticket(request):

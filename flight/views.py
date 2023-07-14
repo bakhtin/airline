@@ -3,11 +3,11 @@ from django.shortcuts import render
 from django.template.context import RequestContext
 from django.utils.dateparse import parse_datetime
 from django.views.generic import ListView
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from blog.models import Post
 from datetime import timedelta
 from flight.models import Flight
-from forms import *
+from .forms import *
 from unique_flight.models import UniqueFlight
 from django.core.paginator import Paginator
 from datetime import datetime
@@ -22,11 +22,11 @@ def index(request):
     search_form = SearchForm()
     posts = Post.objects.all()
     return render(request, 'index.html', {'search_form': search_form,
-                                          'object_list': posts}, context_instance=RequestContext(request))
+                                          'object_list': posts})
 
 
 def contacts(request):
-    return render(request, 'contacts.html', context_instance=RequestContext(request))
+    return render(request, 'contacts.html')
 
 
 def search(request):
@@ -68,13 +68,11 @@ def search(request):
 
                 unique_flights.append(unique_flight)
 
-            return render_to_response('flights.html', {'unique_flights': unique_flights,
-                                                       'search_form': search_form},
-                                      context_instance=RequestContext(request))
+            return render(request, 'flights.html', {'unique_flights': unique_flights,
+                                                       'search_form': search_form})
     else:
         search_form = SearchForm()
-    return render_to_response('search.html', {'search_form': search_form},
-                              context_instance=RequestContext(request))
+    return render(request, 'search.html', {'search_form': search_form})
 
 
 def timetable(request):
@@ -100,12 +98,11 @@ def timetable(request):
                           (flight.departure_time.hour + flight.departure_time.minute)
         flight_time_hours = flight_time // 60
         flight_time_minutes = flight_time - flight_time_hours * 60
-        return render_to_response('timetable.html', {'flight': flight,
+        return render(request, 'timetable.html', {'flight': flight,
                                                      'day': day,
                                                      'interval': interval,
                                                      'flight_time_hours': flight_time_hours,
-                                                     'flight_time_minutes': flight_time_minutes},
-                                  context_instance=RequestContext(request))
+                                                     'flight_time_minutes': flight_time_minutes})
 
 
 def show_all(request):
@@ -165,7 +162,6 @@ def show_all(request):
     is_previous = p.page(page_number).has_previous()
 
     current_objects = p.page(page_number).object_list
-    return render_to_response('flights_all.html', {'object_list': current_objects,
+    return render(request, 'flights_all.html', {'object_list': current_objects,
                                                    'page_number': page_number, 'next': is_next,
-                                                   'previous': is_previous},
-                              context_instance=RequestContext(request))
+                                                   'previous': is_previous})

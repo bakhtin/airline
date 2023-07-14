@@ -25,9 +25,9 @@ class Migration(migrations.Migration):
                 ('price_F', models.FloatField(default=b'22500', verbose_name=b'Price first class')),
                 ('price_B', models.FloatField(default=b'18200', verbose_name=b'Price business class')),
                 ('price_E', models.FloatField(default=b'11400', verbose_name=b'Price economic class')),
-                ('aircraft', models.ForeignKey(related_name='aircraft', default=b'', verbose_name=b'Aircraft', to='aircraft.Aircraft')),
-                ('arrival_airport', models.ForeignKey(related_name='arrival_airport', default=b'', verbose_name=b'Arrival airport', to='airport.Airport')),
-                ('departure_airport', models.ForeignKey(related_name='departure_airport', default=b'', verbose_name=b'Departure airport', to='airport.Airport')),
+                ('aircraft', models.ForeignKey(related_name='aircraft', default=b'', verbose_name=b'Aircraft', on_delete=models.CASCADE, to='aircraft.Aircraft')),
+                ('arrival_airport', models.ForeignKey(related_name='arrival_airport', default=b'', on_delete=models.CASCADE, verbose_name=b'Arrival airport', to='airport.Airport')),
+                ('departure_airport', models.ForeignKey(related_name='departure_airport', default=b'', on_delete=models.CASCADE, verbose_name=b'Departure airport', to='airport.Airport')),
             ],
             options={
             },

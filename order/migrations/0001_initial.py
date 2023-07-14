@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('booking_id', models.CharField(default=b'', max_length=7, verbose_name=b'Booking ID')),
                 ('class_of_service', models.CharField(default=b'E', max_length=1, verbose_name=b'Class of service')),
                 ('taken_seat', models.CharField(default=b'', max_length=4)),
-                ('unique_flight', models.ForeignKey(default=b'', verbose_name=b'Unique flight', to='unique_flight.UniqueFlight')),
+                ('unique_flight', models.ForeignKey(default=b'', verbose_name=b'Unique flight', on_delete=models.CASCADE, to='unique_flight.UniqueFlight')),
             ],
             options={
             },

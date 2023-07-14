@@ -56,3 +56,6 @@ docs/_build/
 *.pyc
 # directories to ignore
 .idea/
+
+# Media Folder
+media/

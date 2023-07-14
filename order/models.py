@@ -12,7 +12,7 @@ class Order(models.Model):
     document_id = models.CharField(max_length=11, verbose_name='Document ID', default='')
     birth_day = models.DateField(verbose_name='Date of birth', default='1990-01-01')
     email = models.EmailField(max_length=255, verbose_name='Email', default='')
-    unique_flight = models.ForeignKey(UniqueFlight, verbose_name='Unique flight', default='')
+    unique_flight = models.ForeignKey(UniqueFlight, verbose_name='Unique flight', default='', on_delete=models.CASCADE)
     order_hash = models.CharField(max_length=256, verbose_name='Hash', default='')
     booking_id = models.CharField(max_length=7, verbose_name='Booking ID', default='')
     class_of_service = models.CharField(max_length=1, verbose_name='Class of service', default='E')

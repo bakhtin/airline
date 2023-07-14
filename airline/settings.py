@@ -13,7 +13,7 @@ import os
 import dj_database_url
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -41,24 +41,25 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'order',
-    'aircraft',
-    'airport',
-    'flight',
-    'city',
-    'country',
-    'unique_flight',
-    'blog',
+    'order.apps.OrderConfig',
+    'aircraft.apps.AircraftConfig',
+    'city.apps.CityConfig',
+    'country.apps.CountryConfig',
+    'unique_flight.apps.Unique_flightConfig',
+    'flight.apps.FlightConfig',
+    'blog.apps.BlogConfig',
+    'airport.apps.AirportConfig',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+]
 
 CONTEXT_PROCESSORS = (
     'django.core.context_processors.csrf',
@@ -85,6 +86,9 @@ DATABASES = {
     }
 }
 
+# If you would like all models in your project to use BigAutoField (or another type) as the default primary key
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -103,9 +107,21 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates').replace('\\', '/'),
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

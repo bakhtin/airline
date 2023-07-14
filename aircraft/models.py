@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from django.core.validators import MaxValueValidator
 from django.db import models
 
 
@@ -13,9 +13,9 @@ class Aircraft(models.Model):
     )
     company = models.CharField(max_length=16)
     model = models.CharField(max_length=16)
-    seat_count_F = models.IntegerField(max_length=3, default=0)
-    seat_count_B = models.IntegerField(max_length=3, default=0)
-    seat_count_E = models.IntegerField(max_length=3, default=0)
+    seat_count_F = models.IntegerField(default=0, validators=[MaxValueValidator(3)])
+    seat_count_B = models.IntegerField(default=0, validators=[MaxValueValidator(3)])
+    seat_count_E = models.IntegerField(default=0, validators=[MaxValueValidator(3)])
     seats_in_a_row_F = models.IntegerField(default=0)
     seats_in_a_row_B = models.IntegerField(default=0)
     seats_in_a_row_E = models.IntegerField(default=0)
@@ -68,5 +68,5 @@ class Aircraft(models.Model):
             i += 1
         return {'F': seats_F, 'B': seats_B, 'E': seats_E}
 
-    def __unicode__(self):
+    def __str__(self):
         return '{} {}'.format(self.company, self.model, self.seat_count_F, self.seat_count_B, self.seat_count_E)

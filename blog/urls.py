@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
-from django.conf.urls import patterns, url
-
-import blog
+from django.urls import path
+import blog.views
 from blog.views import PostDetailView
 
-
-urlpatterns = patterns('',
-    url(r'^$', blog.views.news),
-    url(r'^(?P<pk>\d+)/$', PostDetailView.as_view()),
-)
+urlpatterns = [
+    path('', blog.views.news),
+    path('<int:pk>/', PostDetailView.as_view()),
+]
